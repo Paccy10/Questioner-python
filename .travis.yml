@@ -1,0 +1,22 @@
+language: python
+python:
+  - '3.7'
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+  - pip install codeclimate-test-reporter
+
+services:
+  - postgresql
+
+before_script:
+  - psql -c 'create database questioner_test_db;' -U postgres
+
+addons:
+  code_climate:
+    repo_token:
+      secure: 'kuAsnuqgyWBNaX0SE4TZxIsihtLy9I/8HN2O/nlROcYcLVWb7hRy3s0ffmCCuIqWEWHU4wRdw1ay1zuHSbtdOshHe0s4FGS+o6JY9vdlIf/szjd7Yj6DEaysigNnssql/NuaZieeMzJbyCYPKrNZRvtDQAVyA94ox/Sn+Dyf7Guc8/62ViRzyNFBQ1n07mkNV8EQ/kpu4vlEWEKzEm6KiQDkFdd0j8JMELVnZp5W9XbCuoxo+YDGEi5Sw9lHhacFAeAOguIbgxmxQDOHrJQmazAQVqsUQSBuuGyIQDu0rTXMdEe/cNV9s3xtYJX+qECZEV3Uf0/6z9qNBmVS1jnph4kocdJvToXHQgMvdjeMHPSmUgbiSxte5tX/qOwU2tvKntYUAowKNY/znSPJRpQ9w6bhUzrBemw4xZsOoLGMxaQZM56CC87X4YVkiCJ5sWWSOd8Pwg7EauwPZAIgUXDWfe2OTTGXQhirEJP6tcfw8adXjEKgnxZdocOwjTRRy1rk4ygwnMW/O6zxaBBB1x3t9Rym9kuw7L9VoNzyafB+JTYdPXMpn3bxIvZmoQ5+7wK0pRCWXjH97bftBdvSFCmft8r4g0gwQqpcCYmJlrWHYA0lxK2sZMijzqUrWfP8HTO7f10LbWQhbcYwsMac+QYqz/tY5dWtT5GAsvI6xKHMqNE='
+
+script:
+  - pytest
+  - codeclimate-test-reporter --file .coverage
