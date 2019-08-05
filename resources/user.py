@@ -13,9 +13,11 @@ api = server.api
 
 
 @api.route('/api/auth/signup')
-class UserSignup(Resource):
+class UserSignupResource(Resource):
 
     def post(self):
+        """"Endpoint to create a user"""
+
         user_schema = UserSchema(strict=True, exclude=['password'])
         request_data = request.get_json()
         validation_error = UserValidors.signup_validator(request_data)
@@ -32,16 +34,18 @@ class UserSignup(Resource):
         token = generate_token(user_schema.dump(new_user).data['id'])
         success_response['message'] = 'User successfully created'
         success_response['data'] = {
-            "token": token,
-            "user": user_schema.dump(new_user).data
+            'token': token,
+            'user': user_schema.dump(new_user).data
         }
 
         return success_response, 201
 
 
 @api.route('/api/auth/login')
-class UserLogin(Resource):
+class UserLoginResource(Resource):
     def post(self):
+        """"Endpoint to login a user"""
+
         user_schema = UserSchema(strict=True)
         request_data = request.get_json()
         validation_error = UserValidors.login_validator(request_data)
@@ -56,12 +60,11 @@ class UserLogin(Resource):
         if user:
             user_data = user_schema.dump(user).data
             hashed = bytes(user_data['password'], encoding='utf-8')
-            print(password)
             if bcrypt.checkpw(password, hashed):
                 token = generate_token(user_data['id'])
                 success_response['message'] = 'User successfully logged in'
                 success_response['data'] = {
-                    "token": token
+                    'token': token
                 }
                 return success_response, 200
             return error_response, 404

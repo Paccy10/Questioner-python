@@ -83,3 +83,8 @@ LOGIN_UNREGISTERED_USER = {
     'email': 'pacifique.ndayisenga@andela.com',
     'password': '123456'
 }
+
+LOGIN_USER_DATA_TO_GET_TOKEN = {
+    'email': 'test.user@questioner.com',
+    'password': 'Password'
+}

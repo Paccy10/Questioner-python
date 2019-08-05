@@ -1,5 +1,5 @@
 from flask import json
-from tests.helpers.constants import (CHARSET, CONTENT_TYPE)
+from tests.helpers.constants import (CONTENT_TYPE)
 from tests.mocks.user import (
     VALID_USER, INVALID_USER_WITHOUT_FIRSTNAME,
     INVALID_USER_WITHOUT_LASTNAME,

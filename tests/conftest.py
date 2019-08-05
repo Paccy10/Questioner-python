@@ -3,7 +3,9 @@ from server.instance import server
 from models.database import db
 
 
-pytest_plugins = []
+pytest_plugins = ['tests.fixtures.user',
+                  'tests.fixtures.authorization',
+                  'tests.fixtures.meetup']
 
 
 @pytest.fixture(scope='module')
