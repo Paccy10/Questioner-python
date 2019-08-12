@@ -28,8 +28,7 @@ class UserSignupResource(Resource):
         request_data['password'] = hashed.decode('utf-8')
 
         new_user = User(**request_data)
-        db.session.add(new_user)
-        db.session.commit()
+        new_user.save()
 
         token = generate_token(user_schema.dump(new_user).data['id'])
         success_response['message'] = 'User successfully created'

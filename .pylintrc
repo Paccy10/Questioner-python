@@ -1,2 +1,2 @@
 [MESSAGES CONTROL]
-disable=invalid-name, missing-docstring, no-member, unused-import, broad-except, multiple-imports, unused-argument, redefined-outer-name, bare-except
+disable=invalid-name, missing-docstring, no-member, unused-import, broad-except, multiple-imports, unused-argument, redefined-outer-name, bare-except, singleton-comparison

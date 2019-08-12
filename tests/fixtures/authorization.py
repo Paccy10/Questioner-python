@@ -10,8 +10,7 @@ from tests.helpers.constants import (CHARSET, CONTENT_TYPE)
 
 @pytest.fixture(scope='module')
 def user_auth_header(init_db, new_user):
-    db.session.add(new_user)
-    db.session.commit()
+    new_user.save()
 
     user_schema = UserSchema(strict=True)
     user_data = user_schema.dump(new_user).data
@@ -24,8 +23,7 @@ def user_auth_header(init_db, new_user):
 
 @pytest.fixture(scope='module')
 def admin_auth_header(init_db, new_admin):
-    db.session.add(new_admin)
-    db.session.commit()
+    new_admin.save()
 
     user_schema = UserSchema(strict=True)
     user_data = user_schema.dump(new_admin).data

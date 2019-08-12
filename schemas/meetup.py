@@ -8,4 +8,4 @@ marshmallow = Marshmallow(app)
 class MeetupSchema(marshmallow.Schema):
     class Meta:
         fields = ('id', 'topic', 'location', 'happening_on',
-                  'images', 'tags', 'created_at', 'updated_at')
+                  'images', 'tags', 'created_at', 'updated_at', 'deleted', 'deleted_at')
