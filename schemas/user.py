@@ -1,11 +1,11 @@
-from flask_marshmallow import Marshmallow
-from server.instance import server
-
-app = server.app
-marshmallow = Marshmallow(app)
+from marshmallow import Schema, fields
+from .base import BaseSchema
 
 
-class UserSchema(marshmallow.Schema):
-    class Meta:
-        fields = ('id', 'firstname', 'lastname', 'othername', 'email', 'password',
-                  'is_admin', 'created_at', 'updated_at')
+class UserSchema(BaseSchema):
+    firstname = fields.String(dump_only=True)
+    lastname = fields.String(dump_only=True)
+    othername = fields.String(dump_only=True)
+    email = fields.String(dump_only=True)
+    password = fields.String(dump_only=True)
+    is_admin = fields.Boolean(dump_only=True)

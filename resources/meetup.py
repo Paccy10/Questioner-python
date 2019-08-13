@@ -8,7 +8,7 @@ from models.database import db
 from schemas.meetup import MeetupSchema
 from middlewares.token_required import token_required
 from middlewares.check_role import check_role
-from middlewares.validators import MeetupValidators
+from middlewares.validators.meetup import MeetupValidators
 from helpers.responses import success_response, error_response
 
 api = server.api

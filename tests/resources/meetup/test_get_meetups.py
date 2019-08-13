@@ -1,5 +1,4 @@
 import resources.meetup
-from models.database import db
 
 
 class TestGetAllMeetups:

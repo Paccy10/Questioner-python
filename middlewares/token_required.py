@@ -19,7 +19,8 @@ def token_required(f):
             return error_response, 401
 
         try:
-            decoded_token = jwt.decode(token, os.getenv('SECRET_KEY'))
+            decoded_token = jwt.decode(token, os.getenv(
+                'SECRET_KEY'), algorithms=['HS256'])
         except:
             error_response['message'] = 'Bad request. The provided token is invalid'
             return error_response, 401

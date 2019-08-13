@@ -5,7 +5,7 @@ from server.instance import server
 from models.user import User
 from models.database import db
 from schemas.user import UserSchema
-from middlewares.validators import UserValidors
+from middlewares.validators.user import UserValidors
 from helpers.generate_token import generate_token
 from helpers.responses import success_response, error_response
 
@@ -18,7 +18,8 @@ class UserSignupResource(Resource):
     def post(self):
         """"Endpoint to create a user"""
 
-        user_schema = UserSchema(strict=True, exclude=['password'])
+        user_schema = UserSchema(strict=True,
+                                 exclude=['password', 'deleted_at', 'deleted'])
         request_data = request.get_json()
         validation_error = UserValidors.signup_validator(request_data)
         if validation_error:

@@ -1,11 +1,10 @@
-from flask_marshmallow import Marshmallow
-from server.instance import server
-
-app = server.app
-marshmallow = Marshmallow(app)
+from marshmallow import Schema, fields
+from .base import BaseSchema
 
 
-class MeetupSchema(marshmallow.Schema):
-    class Meta:
-        fields = ('id', 'topic', 'location', 'happening_on',
-                  'images', 'tags', 'created_at', 'updated_at', 'deleted', 'deleted_at')
+class MeetupSchema(BaseSchema):
+    topic = fields.String(dump_only=True)
+    location = fields.String(dump_only=True)
+    happening_on = fields.DateTime(dump_only=True)
+    images = fields.List(fields.String(), dump_only=True)
+    tags = fields.List(fields.String(), dump_only=True)
