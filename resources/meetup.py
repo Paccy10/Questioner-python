@@ -8,7 +8,7 @@ from models.database import db
 from schemas.meetup import MeetupSchema
 from middlewares.token_required import token_required
 from middlewares.check_role import check_role
-from middlewares.validators.meetup import MeetupValidators
+from helpers.validators.meetup import MeetupValidators
 from helpers.responses import success_response, error_response
 
 api = server.api
@@ -23,10 +23,7 @@ class MeetupResource(Resource):
         """"Endpoint to create a meetup"""
 
         request_data = request.get_json()
-        validation_error = MeetupValidators.meetup_validator(request_data)
-
-        if validation_error:
-            return validation_error
+        MeetupValidators.meetup_validator(request_data)
 
         new_meetup = Meetup(**request_data)
         new_meetup.save()
@@ -82,10 +79,7 @@ class SingleMeetupResource(Resource):
             return error_response, 404
 
         request_data = request.get_json()
-        validation_error = MeetupValidators.meetup_validator(request_data)
-
-        if validation_error:
-            return validation_error
+        MeetupValidators.meetup_validator(request_data)
 
         meetup_schema = MeetupSchema(strict=True, exclude=EXCLUDED_FIELDS)
         meetup.update(request_data)

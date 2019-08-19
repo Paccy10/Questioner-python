@@ -2,6 +2,7 @@ import re
 import datetime
 from models.user import User
 from helpers.responses import error_response
+from .error import raise_validation_error
 
 
 class UserValidors:
@@ -15,32 +16,25 @@ class UserValidors:
         email_regex = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
 
         if not firstname or not firstname.strip():
-            error_response['message'] = 'The firstname is required'
-            return error_response, 400
+            raise_validation_error('The firstname is required')
 
         if not lastname or not lastname.strip():
-            error_response['message'] = 'The lastname is required'
-            return error_response, 400
+            raise_validation_error('The lastname is required')
 
         if not email or not email.strip():
-            error_response['message'] = 'The email is required'
-            return error_response, 400
+            raise_validation_error('The email is required')
 
         if not re.match(email_regex, email):
-            error_response['message'] = 'The email provided is not valid'
-            return error_response, 400
+            raise_validation_error('The email provided is not valid')
 
         if User.query.filter(User.email == email).first():
-            error_response['message'] = 'The email provided already exists'
-            return error_response, 400
+            raise_validation_error('The email provided already exists')
 
         if not password or not password.strip():
-            error_response['message'] = 'The password is required'
-            return error_response, 400
+            raise_validation_error('The password is required')
 
         if len(password.strip()) < 6:
-            error_response['message'] = 'Password must be at least 6 characters'
-            return error_response, 400
+            raise_validation_error('Password must be at least 6 characters')
 
     @classmethod
     def login_validator(cls, data: dict):
@@ -49,13 +43,10 @@ class UserValidors:
         email_regex = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
 
         if not email or not email.strip():
-            error_response['message'] = 'The email is required'
-            return error_response, 400
+            raise_validation_error('The email is required')
 
         if not re.match(email_regex, email):
-            error_response['message'] = 'The email provided is not valid'
-            return error_response, 400
+            raise_validation_error('The email provided is not valid')
 
         if not password or not password.strip():
-            error_response['message'] = 'The password is required'
-            return error_response, 400
+            raise_validation_error('The password is required')

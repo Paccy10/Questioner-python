@@ -5,7 +5,7 @@ from server.instance import server
 from models.user import User
 from models.database import db
 from schemas.user import UserSchema
-from middlewares.validators.user import UserValidors
+from helpers.validators.user import UserValidors
 from helpers.generate_token import generate_token
 from helpers.responses import success_response, error_response
 
@@ -21,9 +21,8 @@ class UserSignupResource(Resource):
         user_schema = UserSchema(strict=True,
                                  exclude=['password', 'deleted_at', 'deleted'])
         request_data = request.get_json()
-        validation_error = UserValidors.signup_validator(request_data)
-        if validation_error:
-            return validation_error
+        UserValidors.signup_validator(request_data)
+
         bytes_password = bytes(request_data['password'], encoding='utf-8')
         hashed = bcrypt.hashpw(bytes_password, bcrypt.gensalt(10))
         request_data['password'] = hashed.decode('utf-8')
@@ -48,10 +47,8 @@ class UserLoginResource(Resource):
 
         user_schema = UserSchema(strict=True)
         request_data = request.get_json()
-        validation_error = UserValidors.login_validator(request_data)
+        UserValidors.login_validator(request_data)
 
-        if validation_error:
-            return validation_error
         email = request_data['email']
         password = bytes(request_data['password'], encoding='utf-8')
         user = User.query.filter(User.email == email).first()

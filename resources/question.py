@@ -7,7 +7,7 @@ from models.database import db
 from schemas.question import QuestionSchema
 from schemas.meetup import MeetupSchema
 from middlewares.token_required import token_required
-from middlewares.validators.question import QuestionValidators
+from helpers.validators.question import QuestionValidators
 from helpers.responses import success_response, error_response
 
 api = server.api
@@ -28,10 +28,7 @@ class QuestionResource(Resource):
             return error_response, 404
 
         request_data = request.get_json()
-        validation_error = QuestionValidators.question_validator(request_data)
-
-        if validation_error:
-            return validation_error
+        QuestionValidators.question_validator(request_data)
 
         request_data.update(
             {
@@ -50,7 +47,6 @@ class QuestionResource(Resource):
 
         return success_response, 201
 
-    @token_required
     def get(self, meetup_id):
         """Endpoint to get all questions on a meetup"""
         meetup_schema = MeetupSchema(strict=True, exclude=EXCLUDED_FIELDS)
