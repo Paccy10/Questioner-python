@@ -1,20 +1,20 @@
 from flask import request
 import bcrypt
 from flask_restplus import Resource
-from server.instance import server
 from models.user import User
 from models.database import db
 from schemas.user import UserSchema
+from helpers.swagger.collections import user_namespace
+from helpers.swagger.models import user_model
 from helpers.validators.user import UserValidors
 from helpers.generate_token import generate_token
 from helpers.responses import success_response, error_response
 
-api = server.api
 
-
-@api.route('/api/auth/signup')
+@user_namespace.route('/signup')
 class UserSignupResource(Resource):
 
+    @user_namespace.expect(user_model)
     def post(self):
         """"Endpoint to create a user"""
 
@@ -40,8 +40,10 @@ class UserSignupResource(Resource):
         return success_response, 201
 
 
-@api.route('/api/auth/login')
+@user_namespace.route('/login')
 class UserLoginResource(Resource):
+
+    @user_namespace.expect(user_model)
     def post(self):
         """"Endpoint to login a user"""
 

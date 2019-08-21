@@ -1,24 +1,25 @@
 from datetime import datetime
 from flask import request
 from flask_restplus import Resource
-from server.instance import server
 from models.user import User
 from models.meetup import Meetup
 from models.database import db
 from schemas.meetup import MeetupSchema
 from middlewares.token_required import token_required
 from middlewares.check_role import check_role
+from helpers.swagger.collections import meetup_namespace
+from helpers.swagger.models import meetup_model
 from helpers.validators.meetup import MeetupValidators
 from helpers.responses import success_response, error_response
 
-api = server.api
 EXCLUDED_FIELDS = ['deleted', 'deleted_at']
 
 
-@api.route('/api/meetups')
+@meetup_namespace.route('/')
 class MeetupResource(Resource):
     @token_required
     @check_role
+    @meetup_namespace.expect(meetup_model)
     def post(self):
         """"Endpoint to create a meetup"""
 
@@ -50,7 +51,7 @@ class MeetupResource(Resource):
         return success_response, 200
 
 
-@api.route('/api/meetups/<int:meetup_id>')
+@meetup_namespace.route('/<int:meetup_id>')
 class SingleMeetupResource(Resource):
     def get(self, meetup_id):
         """"Endpoint to get a single meetup"""
@@ -70,6 +71,7 @@ class SingleMeetupResource(Resource):
 
     @token_required
     @check_role
+    @meetup_namespace.expect(meetup_model)
     def put(self, meetup_id):
         """"Endpoint to update a meetup"""
 
@@ -110,7 +112,7 @@ class SingleMeetupResource(Resource):
         return success_response, 200
 
 
-@api.route('/api/meetups/upcoming')
+@meetup_namespace.route('/upcoming')
 class UpcomingMeetupsResource(Resource):
     def get(self):
         """"Endpoint to get all upcoming meetups"""

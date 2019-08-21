@@ -1,22 +1,23 @@
 from flask import request
 from flask_restplus import Resource
-from server.instance import server
 from models.question import Question
 from models.meetup import Meetup
 from models.database import db
 from schemas.question import QuestionSchema
 from schemas.meetup import MeetupSchema
 from middlewares.token_required import token_required
+from helpers.swagger.collections import meetup_namespace
+from helpers.swagger.models import question_model
 from helpers.validators.question import QuestionValidators
 from helpers.responses import success_response, error_response
 
-api = server.api
 EXCLUDED_FIELDS = ['deleted', 'deleted_at']
 
 
-@api.route('/api/meetups/<int:meetup_id>/questions')
+@meetup_namespace.route('/<int:meetup_id>/questions')
 class QuestionResource(Resource):
     @token_required
+    @meetup_namespace.expect(question_model)
     def post(self, meetup_id):
         """Endpoint to create a question"""
         meetup_schema = MeetupSchema(strict=True, exclude=EXCLUDED_FIELDS)

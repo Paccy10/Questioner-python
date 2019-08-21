@@ -9,13 +9,13 @@ environments = {
     'development': {
         'port': 3000,
         'debug': True,
-        'swagger-url': '/api/swagger',
+        'swagger-url': '/documentation',
         'DATABASE_URI': os.getenv('DATABASE_URI')
     },
     'test': {
         'port': 3000,
         'debug': False,
-        'swagger-url': '/api/swagger',
+        'swagger-url': '/documentation',
         'DATABASE_URI': os.getenv('TEST_DATABASE_URI')
     }
 }
