@@ -7,6 +7,8 @@ from tests.mocks.question import (
 from tests.helpers.constants import CONTENT_TYPE
 import resources.question
 
+API_BASE_URL = '/api/v1'
+
 
 class TestCreateQuestion:
     """Class for testing create question endpoint"""
@@ -15,7 +17,7 @@ class TestCreateQuestion:
         new_meetup.save()
         question_data = json.dumps(VALID_QUESTION)
         response = client.post(
-            f'/api/meetups/{new_meetup.id}/questions',
+            f'{API_BASE_URL}/meetups/{new_meetup.id}/questions',
             data=question_data, headers=user_auth_header)
 
         assert response.status_code == 201
@@ -28,7 +30,7 @@ class TestCreateQuestion:
         new_meetup.save()
         question_data = json.dumps(VALID_QUESTION)
         response = client.post(
-            f'/api/meetups/{new_meetup.id}/questions',
+            f'{API_BASE_URL}/meetups/{new_meetup.id}/questions',
             data=question_data, content_type=CONTENT_TYPE)
         message = 'Bad request. Header does not contain an authorization token'
         assert response.status_code == 401
@@ -43,7 +45,7 @@ class TestCreateQuestion:
             'Content_type': CONTENT_TYPE
         }
         response = client.post(
-            f'/api/meetups/{new_meetup.id}/questions',
+            f'{API_BASE_URL}/meetups/{new_meetup.id}/questions',
             data=question_data, headers=headers)
 
         message = 'Bad request. The provided token is invalid'
@@ -58,7 +60,7 @@ class TestCreateQuestion:
                                                           user_auth_header):
         question_data = json.dumps(VALID_QUESTION)
         response = client.post(
-            f'/api/meetups/2/questions',
+            f'{API_BASE_URL}/meetups/2/questions',
             data=question_data, headers=user_auth_header)
 
         assert response.status_code == 404
@@ -73,7 +75,7 @@ class TestCreateQuestion:
         new_meetup.save()
         question_data = json.dumps(INVALID_QUESTION_WITHOUT_TITLE)
         response = client.post(
-            f'/api/meetups/{new_meetup.id}/questions',
+            f'{API_BASE_URL}/meetups/{new_meetup.id}/questions',
             data=question_data, headers=user_auth_header)
 
         assert response.status_code == 400
@@ -88,7 +90,7 @@ class TestCreateQuestion:
         new_meetup.save()
         question_data = json.dumps(INVALID_QUESTION_WITHOUT_BODY)
         response = client.post(
-            f'/api/meetups/{new_meetup.id}/questions',
+            f'{API_BASE_URL}/meetups/{new_meetup.id}/questions',
             data=question_data, headers=user_auth_header)
 
         assert response.status_code == 400

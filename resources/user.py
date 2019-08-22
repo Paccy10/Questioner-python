@@ -2,7 +2,6 @@ from flask import request
 import bcrypt
 from flask_restplus import Resource
 from models.user import User
-from models.database import db
 from schemas.user import UserSchema
 from helpers.swagger.collections import user_namespace
 from helpers.swagger.models import user_model
@@ -18,8 +17,7 @@ class UserSignupResource(Resource):
     def post(self):
         """"Endpoint to create a user"""
 
-        user_schema = UserSchema(strict=True,
-                                 exclude=['password', 'deleted_at', 'deleted'])
+        user_schema = UserSchema(exclude=['password', 'deleted_at', 'deleted'])
         request_data = request.get_json()
         UserValidors.signup_validator(request_data)
 
@@ -30,11 +28,11 @@ class UserSignupResource(Resource):
         new_user = User(**request_data)
         new_user.save()
 
-        token = generate_token(user_schema.dump(new_user).data['id'])
+        token = generate_token(user_schema.dump(new_user)['id'])
         success_response['message'] = 'User successfully created'
         success_response['data'] = {
             'token': token,
-            'user': user_schema.dump(new_user).data
+            'user': user_schema.dump(new_user)
         }
 
         return success_response, 201
@@ -47,7 +45,7 @@ class UserLoginResource(Resource):
     def post(self):
         """"Endpoint to login a user"""
 
-        user_schema = UserSchema(strict=True)
+        user_schema = UserSchema()
         request_data = request.get_json()
         UserValidors.login_validator(request_data)
 
@@ -57,7 +55,7 @@ class UserLoginResource(Resource):
         error_response['message'] = 'Incorrect username or password'
 
         if user:
-            user_data = user_schema.dump(user).data
+            user_data = user_schema.dump(user)
             hashed = bytes(user_data['password'], encoding='utf-8')
             if bcrypt.checkpw(password, hashed):
                 token = generate_token(user_data['id'])

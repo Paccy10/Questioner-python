@@ -15,7 +15,7 @@ from helpers.responses import success_response, error_response
 EXCLUDED_FIELDS = ['deleted', 'deleted_at']
 
 
-@meetup_namespace.route('/')
+@meetup_namespace.route('')
 class MeetupResource(Resource):
     @token_required
     @check_role
@@ -28,10 +28,10 @@ class MeetupResource(Resource):
 
         new_meetup = Meetup(**request_data)
         new_meetup.save()
-        meetup_schema = MeetupSchema(strict=True, exclude=EXCLUDED_FIELDS)
+        meetup_schema = MeetupSchema(exclude=EXCLUDED_FIELDS)
         success_response['message'] = 'Meetup successfully created'
         success_response['data'] = {
-            'meetup': meetup_schema.dump(new_meetup).data
+            'meetup': meetup_schema.dump(new_meetup)
         }
 
         return success_response, 201
@@ -39,10 +39,9 @@ class MeetupResource(Resource):
     def get(self):
         """"Endpoint to get all meetups"""
 
-        meetups_schema = MeetupSchema(many=True, strict=True,
-                                      exclude=EXCLUDED_FIELDS)
+        meetups_schema = MeetupSchema(many=True, exclude=EXCLUDED_FIELDS)
         meetups = meetups_schema.dump(
-            Meetup.query.filter_by(deleted=False)).data
+            Meetup.query.filter_by(deleted=False))
         success_response['message'] = 'Meetups successfully fetched'
         success_response['data'] = {
             'meetups': meetups
@@ -56,9 +55,9 @@ class SingleMeetupResource(Resource):
     def get(self, meetup_id):
         """"Endpoint to get a single meetup"""
 
-        meetup_schema = MeetupSchema(strict=True, exclude=EXCLUDED_FIELDS)
+        meetup_schema = MeetupSchema(exclude=EXCLUDED_FIELDS)
         meetup = meetup_schema.dump(
-            Meetup.query.filter_by(id=meetup_id, deleted=False).first()).data
+            Meetup.query.filter_by(id=meetup_id, deleted=False).first())
         if not meetup:
             error_response['message'] = 'Meetup not found'
             return error_response, 404
@@ -83,11 +82,11 @@ class SingleMeetupResource(Resource):
         request_data = request.get_json()
         MeetupValidators.meetup_validator(request_data)
 
-        meetup_schema = MeetupSchema(strict=True, exclude=EXCLUDED_FIELDS)
+        meetup_schema = MeetupSchema(exclude=EXCLUDED_FIELDS)
         meetup.update(request_data)
         success_response['message'] = 'Meetup successfully updated'
         success_response['data'] = {
-            'meetup': meetup_schema.dump(meetup).data
+            'meetup': meetup_schema.dump(meetup)
         }
 
         return success_response, 200
@@ -103,10 +102,10 @@ class SingleMeetupResource(Resource):
             return error_response, 404
 
         meetup.delete()
-        meetup_schema = MeetupSchema(strict=True)
+        meetup_schema = MeetupSchema()
         success_response['message'] = 'Meetup successfully deleted'
         success_response['data'] = {
-            'meetup': meetup_schema.dump(meetup).data
+            'meetup': meetup_schema.dump(meetup)
         }
 
         return success_response, 200
@@ -117,11 +116,10 @@ class UpcomingMeetupsResource(Resource):
     def get(self):
         """"Endpoint to get all upcoming meetups"""
 
-        meetups_schema = MeetupSchema(many=True, strict=True,
-                                      exclude=EXCLUDED_FIELDS)
+        meetups_schema = MeetupSchema(many=True, exclude=EXCLUDED_FIELDS)
         meetups = meetups_schema.dump(
             Meetup.query.filter(Meetup.happening_on >= datetime.now(),
-                                Meetup.deleted == False)).data
+                                Meetup.deleted == False))
 
         success_response['message'] = 'Upcoming meetups successfully fetched'
         success_response['data'] = {

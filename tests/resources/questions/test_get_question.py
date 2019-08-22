@@ -1,5 +1,7 @@
 import resources.question
 
+API_BASE_URL = '/api/v1'
+
 
 class TestGetAllQuestions:
     """"Class for testing get all questions endpoint"""
@@ -14,7 +16,7 @@ class TestGetAllQuestions:
         new_question.save()
 
         response = client.get(
-            f'/api/meetups/{new_meetup.id}/questions', headers=user_auth_header)
+            f'{API_BASE_URL}/meetups/{new_meetup.id}/questions', headers=user_auth_header)
 
         assert response.status_code == 200
         assert response.json['status'] == 'success'
@@ -28,7 +30,7 @@ class TestGetAllQuestions:
                                                             init_db,
                                                             user_auth_header):
         response = client.get(
-            f'/api/meetups/2/questions', headers=user_auth_header)
+            f'{API_BASE_URL}/meetups/2/questions', headers=user_auth_header)
 
         assert response.status_code == 404
         assert response.json['status'] == 'error'

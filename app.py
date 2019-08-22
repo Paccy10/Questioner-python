@@ -1,7 +1,12 @@
-from server.instance import server
+from server.instance import application
+from config.environment import environment
 import resources.user
 import resources.meetup
 import resources.question
 
+
 if __name__ == '__main__':
-    server.run()
+    application.run(
+        debug=environment['debug'],
+        port=environment['port']
+    )

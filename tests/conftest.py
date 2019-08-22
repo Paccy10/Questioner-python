@@ -1,5 +1,5 @@
 import pytest
-from server.instance import server
+from server.instance import application
 from models.database import db
 
 
@@ -11,8 +11,7 @@ pytest_plugins = ['tests.fixtures.user',
 
 @pytest.fixture(scope='module')
 def app():
-    app = server.app
-    return app
+    return application
 
 
 @pytest.fixture(scope='module')

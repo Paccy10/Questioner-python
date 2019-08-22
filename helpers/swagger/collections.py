@@ -1,7 +1,6 @@
 from flask_restplus import fields
-from server.instance import server
+from server.instance import api
 
-api = server.api
 
 # Remove default namespace
 api.namespaces.clear()

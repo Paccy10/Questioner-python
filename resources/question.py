@@ -20,9 +20,9 @@ class QuestionResource(Resource):
     @meetup_namespace.expect(question_model)
     def post(self, meetup_id):
         """Endpoint to create a question"""
-        meetup_schema = MeetupSchema(strict=True, exclude=EXCLUDED_FIELDS)
+        meetup_schema = MeetupSchema(exclude=EXCLUDED_FIELDS)
         meetup = meetup_schema.dump(
-            Meetup.query.filter_by(id=meetup_id, deleted=False).first()).data
+            Meetup.query.filter_by(id=meetup_id, deleted=False).first())
 
         if not meetup:
             error_response['message'] = 'Meetup not found'
@@ -40,28 +40,27 @@ class QuestionResource(Resource):
 
         new_question = Question(**request_data)
         new_question.save()
-        question_schema = QuestionSchema(strict=True, exclude=EXCLUDED_FIELDS)
+        question_schema = QuestionSchema(exclude=EXCLUDED_FIELDS)
         success_response['message'] = 'Question successfully created'
         success_response['data'] = {
-            'question': question_schema.dump(new_question).data
+            'question': question_schema.dump(new_question)
         }
 
         return success_response, 201
 
     def get(self, meetup_id):
         """Endpoint to get all questions on a meetup"""
-        meetup_schema = MeetupSchema(strict=True, exclude=EXCLUDED_FIELDS)
+        meetup_schema = MeetupSchema(exclude=EXCLUDED_FIELDS)
         meetup = meetup_schema.dump(
-            Meetup.query.filter_by(id=meetup_id, deleted=False).first()).data
+            Meetup.query.filter_by(id=meetup_id, deleted=False).first())
 
         if not meetup:
             error_response['message'] = 'Meetup not found'
             return error_response, 404
 
-        questions_schema = QuestionSchema(
-            many=True, strict=True, exclude=EXCLUDED_FIELDS)
+        questions_schema = QuestionSchema(many=True, exclude=EXCLUDED_FIELDS)
         questions = questions_schema.dump(
-            Question.query.filter(Question.meetup_id == meetup_id, Question.deleted == False)).data
+            Question.query.filter(Question.meetup_id == meetup_id, Question.deleted == False))
         success_response['message'] = 'Questions successfully fetched'
         success_response['data'] = {
             'questions': questions

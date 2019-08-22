@@ -10,6 +10,8 @@ from tests.mocks.meetup import (
 from tests.helpers.constants import CONTENT_TYPE
 import resources.meetup
 
+API_BASE_URL = '/api/v1'
+
 
 class TestUpdateMeetup:
     """Class for testing update meetup endpoint"""
@@ -18,7 +20,7 @@ class TestUpdateMeetup:
         new_meetup.save()
         meetup_data = json.dumps(VALID_MEETUP)
         response = client.put(
-            f'/api/meetups/{new_meetup.id}', data=meetup_data, headers=admin_auth_header)
+            f'{API_BASE_URL}/meetups/{new_meetup.id}', data=meetup_data, headers=admin_auth_header)
 
         assert response.status_code == 200
         assert response.json['status'] == 'success'
@@ -30,7 +32,7 @@ class TestUpdateMeetup:
         new_meetup.save()
         meetup_data = json.dumps(VALID_MEETUP)
         response = client.put(
-            f'/api/meetups/{new_meetup.id}', data=meetup_data, content_type=CONTENT_TYPE)
+            f'{API_BASE_URL}/meetups/{new_meetup.id}', data=meetup_data, content_type=CONTENT_TYPE)
         message = 'Bad request. Header does not contain an authorization token'
         assert response.status_code == 401
         assert response.json['status'] == 'error'
@@ -44,7 +46,7 @@ class TestUpdateMeetup:
             'Content_type': CONTENT_TYPE
         }
         response = client.put(
-            f'/api/meetups/{new_meetup.id}', data=meetup_data, headers=headers)
+            f'{API_BASE_URL}/meetups/{new_meetup.id}', data=meetup_data, headers=headers)
         message = 'Bad request. The provided token is invalid'
         assert response.status_code == 401
         assert response.json['status'] == 'error'
@@ -58,7 +60,7 @@ class TestUpdateMeetup:
         new_meetup.save()
         meetup_data = json.dumps(VALID_MEETUP)
         response = client.put(
-            f'/api/meetups/{new_meetup.id}', data=meetup_data, headers=user_auth_header)
+            f'{API_BASE_URL}/meetups/{new_meetup.id}', data=meetup_data, headers=user_auth_header)
         message = 'Permission denied. You are not authorized to perform this action'
         assert response.status_code == 403
         assert response.json['status'] == 'error'
@@ -72,7 +74,7 @@ class TestUpdateMeetup:
         new_meetup.save()
         meetup_data = json.dumps(INVALID_MEETUP_WITHOUT_TOPIC)
         response = client.put(
-            f'/api/meetups/{new_meetup.id}', data=meetup_data, headers=admin_auth_header)
+            f'{API_BASE_URL}/meetups/{new_meetup.id}', data=meetup_data, headers=admin_auth_header)
 
         assert response.status_code == 400
         assert response.json['status'] == 'error'
@@ -86,7 +88,7 @@ class TestUpdateMeetup:
         new_meetup.save()
         meetup_data = json.dumps(INVALID_MEETUP_WITHOUT_LOCATION)
         response = client.put(
-            f'/api/meetups/{new_meetup.id}', data=meetup_data, headers=admin_auth_header)
+            f'{API_BASE_URL}/meetups/{new_meetup.id}', data=meetup_data, headers=admin_auth_header)
 
         assert response.status_code == 400
         assert response.json['status'] == 'error'
@@ -96,7 +98,7 @@ class TestUpdateMeetup:
         new_meetup.save()
         meetup_data = json.dumps(INVALID_MEETUP_WITHOUT_DATE)
         response = client.put(
-            f'/api/meetups/{new_meetup.id}', data=meetup_data, headers=admin_auth_header)
+            f'{API_BASE_URL}/meetups/{new_meetup.id}', data=meetup_data, headers=admin_auth_header)
 
         assert response.status_code == 400
         assert response.json['status'] == 'error'
@@ -110,7 +112,7 @@ class TestUpdateMeetup:
         new_meetup.save()
         meetup_data = json.dumps(INVALID_MEETUP_WITH_INVALID_DATE_FORMAT)
         response = client.put(
-            f'/api/meetups/{new_meetup.id}', data=meetup_data, headers=admin_auth_header)
+            f'{API_BASE_URL}/meetups/{new_meetup.id}', data=meetup_data, headers=admin_auth_header)
 
         assert response.status_code == 400
         assert response.json['status'] == 'error'
@@ -124,7 +126,7 @@ class TestUpdateMeetup:
         new_meetup.save()
         meetup_data = json.dumps(INVALID_MEETUP_WITH_INVALID_DATE)
         response = client.put(
-            f'/api/meetups/{new_meetup.id}', data=meetup_data, headers=admin_auth_header)
+            f'{API_BASE_URL}/meetups/{new_meetup.id}', data=meetup_data, headers=admin_auth_header)
 
         message = 'Invalid date. The date should be greater or equal to today\'s date'
         assert response.status_code == 400
@@ -137,7 +139,7 @@ class TestUpdateMeetup:
                                                         admin_auth_header):
         meetup_data = json.dumps(INVALID_MEETUP_WITH_INVALID_DATE)
         response = client.put(
-            f'/api/meetups/2', data=meetup_data, headers=admin_auth_header)
+            f'{API_BASE_URL}/meetups/2', data=meetup_data, headers=admin_auth_header)
 
         assert response.status_code == 404
         assert response.json['status'] == 'error'

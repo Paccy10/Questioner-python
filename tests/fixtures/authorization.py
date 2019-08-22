@@ -12,8 +12,8 @@ from tests.helpers.constants import (CHARSET, CONTENT_TYPE)
 def user_auth_header(init_db, new_user):
     new_user.save()
 
-    user_schema = UserSchema(strict=True)
-    user_data = user_schema.dump(new_user).data
+    user_schema = UserSchema()
+    user_data = user_schema.dump(new_user)
     token = generate_token(user_data['id'])
     return {
         'Authorization': token,
@@ -25,8 +25,8 @@ def user_auth_header(init_db, new_user):
 def admin_auth_header(init_db, new_admin):
     new_admin.save()
 
-    user_schema = UserSchema(strict=True)
-    user_data = user_schema.dump(new_admin).data
+    user_schema = UserSchema()
+    user_data = user_schema.dump(new_admin)
     token = generate_token(user_data['id'])
     return {
         'Authorization': token,

@@ -11,8 +11,8 @@ def check_role(f):
     def decorated(*args, **kwargs):
         decoded_token = request.decoded_token
         current_user = User.query.filter_by(id=decoded_token['user']).first()
-        user_schema = UserSchema(strict=True)
-        user_data = user_schema.dump(current_user).data
+        user_schema = UserSchema()
+        user_data = user_schema.dump(current_user)
         if not user_data['is_admin']:
             message = 'Permission denied. You are not authorized to perform this action'
             error_response['message'] = message
