@@ -9,7 +9,7 @@ from helpers.swagger.collections import meetup_namespace
 from helpers.swagger.models import question_model
 from helpers.validators.question import QuestionValidators
 from helpers.responses import success_response, error_response
-from helpers.get_votes import get_votes
+from helpers.vote import get_votes
 
 EXCLUDED_FIELDS = ['deleted', 'deleted_at']
 
