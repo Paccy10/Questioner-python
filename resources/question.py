@@ -2,7 +2,6 @@ from flask import request
 from flask_restplus import Resource
 from models.question import Question
 from models.meetup import Meetup
-from models.database import db
 from schemas.question import QuestionSchema
 from schemas.meetup import MeetupSchema
 from middlewares.token_required import token_required
@@ -10,6 +9,7 @@ from helpers.swagger.collections import meetup_namespace
 from helpers.swagger.models import question_model
 from helpers.validators.question import QuestionValidators
 from helpers.responses import success_response, error_response
+from helpers.get_votes import get_votes
 
 EXCLUDED_FIELDS = ['deleted', 'deleted_at']
 
@@ -61,6 +61,12 @@ class QuestionResource(Resource):
         questions_schema = QuestionSchema(many=True, exclude=EXCLUDED_FIELDS)
         questions = questions_schema.dump(
             Question.query.filter(Question.meetup_id == meetup_id, Question.deleted == False))
+
+        # Adding votes to a question
+        for question in questions:
+            votes = get_votes(question['id'])
+            question.update(votes)
+
         success_response['message'] = 'Questions successfully fetched'
         success_response['data'] = {
             'questions': questions

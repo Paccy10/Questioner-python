@@ -19,5 +19,6 @@ meetup_namespace = api.namespace(
 
 question_namespace = api.namespace(
     'Questions',
-    description='A collection of Question related endpoints'
+    description='A collection of Question related endpoints',
+    path='/questions'
 )

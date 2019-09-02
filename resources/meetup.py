@@ -3,7 +3,6 @@ from flask import request
 from flask_restplus import Resource
 from models.user import User
 from models.meetup import Meetup
-from models.database import db
 from schemas.meetup import MeetupSchema
 from middlewares.token_required import token_required
 from middlewares.check_role import check_role
