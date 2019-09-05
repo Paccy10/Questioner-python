@@ -1,13 +1,13 @@
 import pytest
-from models.question import Question
+from models.rsvp import Rsvp
 
 
 @pytest.fixture(scope='module')
-def new_question(init_db, new_user, new_meetup):
+def new_rsvp(init_db, new_user, new_meetup):
     new_user.save()
     new_meetup.save()
-    return Question(
-        body='Test question body',
+    return Rsvp(
+        response='Yes',
         user_id=new_user.id,
         meetup_id=new_meetup.id
     )

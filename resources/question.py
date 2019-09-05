@@ -1,15 +1,14 @@
 from flask import request
 from flask_restplus import Resource
 from models.question import Question
-from models.meetup import Meetup
 from schemas.question import QuestionSchema
-from schemas.meetup import MeetupSchema
 from middlewares.token_required import token_required
 from helpers.swagger.collections import meetup_namespace
 from helpers.swagger.models import question_model
 from helpers.validators.question import QuestionValidators
 from helpers.responses import success_response, error_response
 from helpers.vote import get_votes
+from helpers.meetup import get_meetup
 
 EXCLUDED_FIELDS = ['deleted', 'deleted_at']
 
@@ -20,9 +19,8 @@ class QuestionResource(Resource):
     @meetup_namespace.expect(question_model)
     def post(self, meetup_id):
         """Endpoint to create a question"""
-        meetup_schema = MeetupSchema(exclude=EXCLUDED_FIELDS)
-        meetup = meetup_schema.dump(
-            Meetup.query.filter_by(id=meetup_id, deleted=False).first())
+
+        meetup = get_meetup(meetup_id)
 
         if not meetup:
             error_response['message'] = 'Meetup not found'
@@ -50,9 +48,8 @@ class QuestionResource(Resource):
 
     def get(self, meetup_id):
         """Endpoint to get all questions on a meetup"""
-        meetup_schema = MeetupSchema(exclude=EXCLUDED_FIELDS)
-        meetup = meetup_schema.dump(
-            Meetup.query.filter_by(id=meetup_id, deleted=False).first())
+
+        meetup = get_meetup(meetup_id)
 
         if not meetup:
             error_response['message'] = 'Meetup not found'

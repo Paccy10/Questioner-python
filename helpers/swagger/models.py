@@ -21,6 +21,10 @@ meetup_model = meetup_namespace.model('Meetup', {
 
 # swagger model defining question fields
 question_model = question_namespace.model('Question', {
-    'title': fields.String(required=True, description='Question title'),
     'body': fields.String(required=True, description='Question body')
+})
+
+# swagger model defining rsvp fields
+rsvp_model = meetup_namespace.model('Rsvp', {
+    'response': fields.String(required=True, description='RSVP response')
 })

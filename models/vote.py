@@ -1,4 +1,3 @@
-from sqlalchemy.dialects import postgresql
 from .database import db
 from .base import BaseModel
 

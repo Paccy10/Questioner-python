@@ -17,7 +17,7 @@ class TestDownvoteEndpoint:
         assert response.json['status'] == 'success'
         assert response.json['message'] == 'Question successfully downvoted'
         assert 'question' in response.json['data']
-        assert response.json['data']['question']['title'] == new_question.title
+        assert response.json['data']['question']['body'] == new_question.body
 
     def test_question_downvote_with_invalid_question_id_fails(self,
                                                               client,
@@ -62,4 +62,4 @@ class TestDownvoteEndpoint:
         assert response2.json['status'] == 'success'
         assert response2.json['message'] == 'Question successfully downvoted'
         assert 'question' in response2.json['data']
-        assert response2.json['data']['question']['title'] == new_question.title
+        assert response2.json['data']['question']['body'] == new_question.body

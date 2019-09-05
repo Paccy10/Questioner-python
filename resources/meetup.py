@@ -10,6 +10,7 @@ from helpers.swagger.collections import meetup_namespace
 from helpers.swagger.models import meetup_model
 from helpers.validators.meetup import MeetupValidators
 from helpers.responses import success_response, error_response
+from helpers.meetup import get_meetup
 
 EXCLUDED_FIELDS = ['deleted', 'deleted_at']
 
@@ -54,9 +55,8 @@ class SingleMeetupResource(Resource):
     def get(self, meetup_id):
         """"Endpoint to get a single meetup"""
 
-        meetup_schema = MeetupSchema(exclude=EXCLUDED_FIELDS)
-        meetup = meetup_schema.dump(
-            Meetup.query.filter_by(id=meetup_id, deleted=False).first())
+        meetup = get_meetup(meetup_id)
+
         if not meetup:
             error_response['message'] = 'Meetup not found'
             return error_response, 404

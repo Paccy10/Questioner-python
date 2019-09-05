@@ -1,7 +1,6 @@
 from flask import json
 from tests.mocks.question import (
     VALID_QUESTION,
-    INVALID_QUESTION_WITHOUT_TITLE,
     INVALID_QUESTION_WITHOUT_BODY
 )
 from tests.helpers.constants import CONTENT_TYPE
@@ -24,7 +23,7 @@ class TestCreateQuestion:
         assert response.json['status'] == 'success'
         assert response.json['message'] == 'Question successfully created'
         assert 'question' in response.json['data']
-        assert response.json['data']['question']['title'] == VALID_QUESTION['title']
+        assert response.json['data']['question']['body'] == VALID_QUESTION['body']
 
     def test_create_question_without_auth_token_fails(self, client, init_db, new_meetup):
         new_meetup.save()
@@ -67,20 +66,6 @@ class TestCreateQuestion:
         assert response.json['status'] == 'error'
         assert response.json['message'] == 'Meetup not found'
 
-    def test_create_question_without_title_fails(self,
-                                                 client,
-                                                 init_db,
-                                                 new_meetup,
-                                                 user_auth_header):
-        new_meetup.save()
-        question_data = json.dumps(INVALID_QUESTION_WITHOUT_TITLE)
-        response = client.post(
-            f'{API_BASE_URL}/meetups/{new_meetup.id}/questions',
-            data=question_data, headers=user_auth_header)
-
-        assert response.status_code == 400
-        assert response.json['status'] == 'error'
-        assert response.json['message'] == 'The title is required'
 
     def test_create_question_without_body_fails(self,
                                                 client,
