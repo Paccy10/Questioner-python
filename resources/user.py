@@ -4,7 +4,7 @@ from flask_restplus import Resource
 from models.user import User
 from schemas.user import UserSchema
 from helpers.swagger.collections import user_namespace
-from helpers.swagger.models import user_model
+from helpers.swagger.models import signup_model, login_model
 from helpers.validators.user import UserValidors
 from helpers.generate_token import generate_token
 from helpers.responses import success_response, error_response
@@ -14,7 +14,7 @@ from helpers.request_data_strip import request_data_strip
 @user_namespace.route('/signup')
 class UserSignupResource(Resource):
 
-    @user_namespace.expect(user_model)
+    @user_namespace.expect(signup_model)
     def post(self):
         """"Endpoint to create a user"""
 
@@ -44,7 +44,7 @@ class UserSignupResource(Resource):
 @user_namespace.route('/login')
 class UserLoginResource(Resource):
 
-    @user_namespace.expect(user_model)
+    @user_namespace.expect(login_model)
     def post(self):
         """"Endpoint to login a user"""
 

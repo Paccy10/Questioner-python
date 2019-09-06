@@ -7,7 +7,7 @@ from schemas.meetup import MeetupSchema
 from middlewares.token_required import token_required
 from middlewares.check_role import check_role
 from helpers.swagger.collections import meetup_namespace
-from helpers.swagger.models import meetup_model
+from helpers.swagger.models import meetup_model, images_model, tags_model
 from helpers.validators.meetup import MeetupValidators
 from helpers.responses import success_response, error_response
 from helpers.meetup import get_meetup
@@ -128,6 +128,62 @@ class UpcomingMeetupsResource(Resource):
         success_response['message'] = 'Upcoming meetups successfully fetched'
         success_response['data'] = {
             'meetups': meetups
+        }
+
+        return success_response, 200
+
+
+@meetup_namespace.route('/<int:meetup_id>/images')
+class MeetupImagesResource(Resource):
+
+    @token_required
+    @check_role
+    @meetup_namespace.expect(images_model)
+    def patch(self, meetup_id):
+        """"Endpoint to add images to a meetup"""
+
+        meetup = Meetup.query.filter_by(id=meetup_id, deleted=False).first()
+
+        if not meetup:
+            error_response['message'] = 'Meetup not found'
+            return error_response, 404
+
+        request_data = request.get_json()
+        MeetupValidators.images_validator(request_data)
+
+        meetup_schema = MeetupSchema(exclude=EXCLUDED_FIELDS)
+        meetup.update(request_data)
+        success_response['message'] = 'Images successfully added'
+        success_response['data'] = {
+            'meetup': meetup_schema.dump(meetup)
+        }
+
+        return success_response, 200
+
+
+@meetup_namespace.route('/<int:meetup_id>/tags')
+class MeetupTagsResource(Resource):
+
+    @token_required
+    @check_role
+    @meetup_namespace.expect(tags_model)
+    def patch(self, meetup_id):
+        """"Endpoint to add tags to a meetup"""
+
+        meetup = Meetup.query.filter_by(id=meetup_id, deleted=False).first()
+
+        if not meetup:
+            error_response['message'] = 'Meetup not found'
+            return error_response, 404
+
+        request_data = request.get_json()
+        MeetupValidators.tags_validator(request_data)
+
+        meetup_schema = MeetupSchema(exclude=EXCLUDED_FIELDS)
+        meetup.update(request_data)
+        success_response['message'] = 'Tags successfully added'
+        success_response['data'] = {
+            'meetup': meetup_schema.dump(meetup)
         }
 
         return success_response, 200

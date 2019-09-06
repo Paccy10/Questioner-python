@@ -36,3 +36,27 @@ INVALID_MEETUP_WITH_INVALID_DATE = {
     'location': 'Kigali Convention Center',
     'happening_on': '2000-08-01'
 }
+
+VALID_IMAGES = {
+    'images': ['Image1', 'Image2']
+}
+
+INVALID_IMAGES = {
+    'images': ''
+}
+
+INVALID_STRING_IMAGES = {
+    'images': 'Image1'
+}
+
+VALID_TAGS = {
+    'tags': ['Tag1', 'Tag2']
+}
+
+INVALID_TAGS = {
+    'tags': ''
+}
+
+INVALID_STRING_TAGS = {
+    'tags': 'Tag1'
+}
