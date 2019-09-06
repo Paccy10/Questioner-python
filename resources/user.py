@@ -8,6 +8,7 @@ from helpers.swagger.models import user_model
 from helpers.validators.user import UserValidors
 from helpers.generate_token import generate_token
 from helpers.responses import success_response, error_response
+from helpers.request_data_strip import request_data_strip
 
 
 @user_namespace.route('/signup')
@@ -20,6 +21,8 @@ class UserSignupResource(Resource):
         user_schema = UserSchema(exclude=['password', 'deleted_at', 'deleted'])
         request_data = request.get_json()
         UserValidors.signup_validator(request_data)
+
+        request_data = request_data_strip(request_data)
 
         bytes_password = bytes(request_data['password'], encoding='utf-8')
         hashed = bcrypt.hashpw(bytes_password, bcrypt.gensalt(10))
@@ -49,6 +52,8 @@ class UserLoginResource(Resource):
         request_data = request.get_json()
         UserValidors.login_validator(request_data)
 
+        request_data = request_data_strip(request_data)
+
         email = request_data['email']
         password = bytes(request_data['password'], encoding='utf-8')
         user = User.query.filter(User.email == email).first()
@@ -59,9 +64,13 @@ class UserLoginResource(Resource):
             hashed = bytes(user_data['password'], encoding='utf-8')
             if bcrypt.checkpw(password, hashed):
                 token = generate_token(user_data['id'])
+                user_schema = UserSchema(
+                    exclude=['password', 'deleted_at', 'deleted'])
+                logged_in_user = user_schema.dump(user)
                 success_response['message'] = 'User successfully logged in'
                 success_response['data'] = {
-                    'token': token
+                    'token': token,
+                    'user': logged_in_user
                 }
                 return success_response, 200
             return error_response, 404

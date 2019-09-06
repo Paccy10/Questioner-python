@@ -8,6 +8,7 @@ from middlewares.token_required import token_required
 from helpers.responses import success_response, error_response
 from helpers.swagger.collections import question_namespace
 from helpers.vote import get_votes, get_vote, update_vote
+from helpers.question import get_question
 
 EXCLUDED_FIELDS = ['deleted', 'deleted_at']
 
@@ -17,9 +18,8 @@ class UpvoteResource(Resource):
     @token_required
     def patch(self, question_id):
         """Endpoint to upvote a question"""
-        question_schema = QuestionSchema(exclude=EXCLUDED_FIELDS)
-        question = question_schema.dump(
-            Question.query.filter_by(id=question_id, deleted=False).first())
+
+        question = get_question(question_id)
 
         if not question:
             error_response['message'] = 'Question not found'
@@ -54,9 +54,7 @@ class DownvoteResource(Resource):
     def patch(self, question_id):
         """Endpoint to downvote a question"""
 
-        question_schema = QuestionSchema(exclude=EXCLUDED_FIELDS)
-        question = question_schema.dump(
-            Question.query.filter_by(id=question_id, deleted=False).first())
+        question = get_question(question_id)
 
         if not question:
             error_response['message'] = 'Question not found'

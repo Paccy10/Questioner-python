@@ -7,6 +7,7 @@ from models.meetup import Meetup
 from models.question import Question
 from models.vote import Vote
 from models.rsvp import Rsvp
+from models.comment import Comment
 
 migrate = Migrate(application, db)
 

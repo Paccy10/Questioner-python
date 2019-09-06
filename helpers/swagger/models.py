@@ -28,3 +28,8 @@ question_model = question_namespace.model('Question', {
 rsvp_model = meetup_namespace.model('Rsvp', {
     'response': fields.String(required=True, description='RSVP response')
 })
+
+# swagger model defining comment fields
+comment_model = question_namespace.model('Comment', {
+    'body': fields.String(required=True, description='Comment body')
+})

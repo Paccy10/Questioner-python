@@ -24,10 +24,10 @@ class UserValidors:
         if not email or not email.strip():
             raise_validation_error('The email is required')
 
-        if not re.match(email_regex, email):
+        if not re.match(email_regex, email.strip()):
             raise_validation_error('The email provided is not valid')
 
-        if User.query.filter(User.email == email).first():
+        if User.query.filter(User.email == email.strip()).first():
             raise_validation_error('The email provided already exists')
 
         if not password or not password.strip():
@@ -45,7 +45,7 @@ class UserValidors:
         if not email or not email.strip():
             raise_validation_error('The email is required')
 
-        if not re.match(email_regex, email):
+        if not re.match(email_regex, email.strip()):
             raise_validation_error('The email provided is not valid')
 
         if not password or not password.strip():

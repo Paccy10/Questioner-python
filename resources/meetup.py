@@ -11,6 +11,7 @@ from helpers.swagger.models import meetup_model
 from helpers.validators.meetup import MeetupValidators
 from helpers.responses import success_response, error_response
 from helpers.meetup import get_meetup
+from helpers.request_data_strip import request_data_strip
 
 EXCLUDED_FIELDS = ['deleted', 'deleted_at']
 
@@ -25,6 +26,8 @@ class MeetupResource(Resource):
 
         request_data = request.get_json()
         MeetupValidators.meetup_validator(request_data)
+
+        request_data = request_data_strip(request_data)
 
         new_meetup = Meetup(**request_data)
         new_meetup.save()
@@ -80,6 +83,8 @@ class SingleMeetupResource(Resource):
 
         request_data = request.get_json()
         MeetupValidators.meetup_validator(request_data)
+
+        request_data = request_data_strip(request_data)
 
         meetup_schema = MeetupSchema(exclude=EXCLUDED_FIELDS)
         meetup.update(request_data)

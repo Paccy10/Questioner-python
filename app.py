@@ -6,6 +6,7 @@ import resources.meetup
 import resources.question
 import resources.vote
 import resources.rsvp
+import resources.comment
 
 
 @application.errorhandler(404)

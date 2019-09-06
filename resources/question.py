@@ -9,6 +9,7 @@ from helpers.validators.question import QuestionValidators
 from helpers.responses import success_response, error_response
 from helpers.vote import get_votes
 from helpers.meetup import get_meetup
+from helpers.request_data_strip import request_data_strip
 
 EXCLUDED_FIELDS = ['deleted', 'deleted_at']
 
@@ -28,6 +29,8 @@ class QuestionResource(Resource):
 
         request_data = request.get_json()
         QuestionValidators.question_validator(request_data)
+
+        request_data = request_data_strip(request_data)
 
         request_data.update(
             {

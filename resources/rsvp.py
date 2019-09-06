@@ -9,6 +9,7 @@ from helpers.validators.rsvp import RsvpValidators
 from helpers.responses import success_response, error_response
 from helpers.rsvp import update_rsvp_if_exists
 from helpers.meetup import get_meetup
+from helpers.request_data_strip import request_data_strip
 
 EXCLUDED_FIELDS = ['deleted', 'deleted_at']
 
@@ -28,6 +29,8 @@ class RsvpResource(Resource):
 
         request_data = request.get_json()
         RsvpValidators.rsvp_validator(request_data)
+
+        request_data = request_data_strip(request_data)
 
         request_data.update(
             {

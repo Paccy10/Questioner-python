@@ -11,6 +11,6 @@ class RsvpValidators:
         if not response or not response.strip():
             raise_validation_error('The response is required')
 
-        if response.lower() not in responses:
+        if response.lower().strip() not in responses:
             raise_validation_error(
                 "The response should be 'Yes', 'No' or 'Maybe'")

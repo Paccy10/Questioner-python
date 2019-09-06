@@ -7,7 +7,8 @@ pytest_plugins = ['tests.fixtures.user',
                   'tests.fixtures.authorization',
                   'tests.fixtures.meetup',
                   'tests.fixtures.question',
-                  'tests.fixtures.rsvp']
+                  'tests.fixtures.rsvp',
+                  'tests.fixtures.comment']
 
 
 @pytest.fixture(scope='module')
