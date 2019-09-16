@@ -8,7 +8,7 @@ EXCLUDED_FIELDS = ['deleted', 'deleted_at']
 
 def update_rsvp_if_exists(meetup_id, request_data):
     rsvp = Rsvp.query.filter(
-        Rsvp.user_id == request.decoded_token['user'],
+        Rsvp.user_id == request.decoded_token['user']['id'],
         Rsvp.meetup_id == meetup_id).first()
 
     if rsvp:

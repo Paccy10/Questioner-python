@@ -33,7 +33,7 @@ class CommentResource(Resource):
 
         request_data.update(
             {
-                'user_id': request.decoded_token['user'],
+                'user_id': request.decoded_token['user']['id'],
                 'question_id': question_id
             }
         )

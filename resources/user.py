@@ -31,7 +31,7 @@ class UserSignupResource(Resource):
         new_user = User(**request_data)
         new_user.save()
 
-        token = generate_token(user_schema.dump(new_user)['id'])
+        token = generate_token(user_schema.dump(new_user))
         success_response['message'] = 'User successfully created'
         success_response['data'] = {
             'token': token,
@@ -63,10 +63,10 @@ class UserLoginResource(Resource):
             user_data = user_schema.dump(user)
             hashed = bytes(user_data['password'], encoding='utf-8')
             if bcrypt.checkpw(password, hashed):
-                token = generate_token(user_data['id'])
                 user_schema = UserSchema(
                     exclude=['password', 'deleted_at', 'deleted'])
                 logged_in_user = user_schema.dump(user)
+                token = generate_token(user_schema.dump(user))
                 success_response['message'] = 'User successfully logged in'
                 success_response['data'] = {
                     'token': token,

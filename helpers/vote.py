@@ -27,7 +27,7 @@ def get_votes(question_id):
 
 def get_vote(question_id):
     vote = Vote.query.filter(
-        Vote.user_id == request.decoded_token['user'],
+        Vote.user_id == request.decoded_token['user']['id'],
         Vote.question_id == question_id).first()
 
     return vote

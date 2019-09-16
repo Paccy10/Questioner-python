@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint
 from flask_restplus import Api
 from config.environment import environment
-
+from flask_cors import CORS
 
 api_blueprint = Blueprint('api_blueprint', __name__, url_prefix='/api/v1')
 authorizations = {
@@ -29,3 +29,5 @@ def create_app():
 
 
 application = create_app()
+
+CORS(application, support_credentials=True)

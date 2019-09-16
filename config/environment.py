@@ -9,7 +9,7 @@ env = 'test' if 'pytest' in sys.modules else os.environ.get(
 
 environments = {
     'development': {
-        'port': 3000,
+        'port': 4000,
         'debug': True,
         'swagger-url': '/documentation',
         'DATABASE_URI': os.getenv('DATABASE_URL')

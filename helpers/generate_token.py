@@ -3,13 +3,13 @@ import os
 import jwt
 
 
-def generate_token(user_id: int):
+def generate_token(user: dict):
     """Generates the authentication token"""
 
     payload = {
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
         'iat': datetime.datetime.utcnow(),
-        'user': user_id
+        'user': user
     }
     token = jwt.encode(
         payload,

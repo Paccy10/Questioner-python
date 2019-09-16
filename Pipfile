@@ -25,6 +25,7 @@ bcrypt = "*"
 pyjwt = "*"
 coverage = "==4.3"
 gunicorn = "*"
+flask-cors = "*"
 
 [requires]
 python_version = "3.7"

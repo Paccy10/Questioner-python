@@ -27,7 +27,7 @@ class UpvoteResource(Resource):
 
         vote = get_vote(question_id)
         vote_data = {
-            'user_id': request.decoded_token['user'],
+            'user_id': request.decoded_token['user']['id'],
             'question_id': question_id,
             'upvote': True,
             'downvote': False
@@ -62,7 +62,7 @@ class DownvoteResource(Resource):
 
         vote = get_vote(question_id)
         vote_data = {
-            'user_id': request.decoded_token['user'],
+            'user_id': request.decoded_token['user']['id'],
             'question_id': question_id,
             'upvote': False,
             'downvote': True

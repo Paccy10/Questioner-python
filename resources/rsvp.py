@@ -34,7 +34,7 @@ class RsvpResource(Resource):
 
         request_data.update(
             {
-                'user_id': request.decoded_token['user'],
+                'user_id': request.decoded_token['user']['id'],
                 'meetup_id': meetup_id
             }
         )

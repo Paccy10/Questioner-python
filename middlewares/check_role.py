@@ -10,7 +10,7 @@ def check_role(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         decoded_token = request.decoded_token
-        current_user = User.query.filter_by(id=decoded_token['user']).first()
+        current_user = User.query.filter_by(id=decoded_token['user']['id']).first()
         user_schema = UserSchema()
         user_data = user_schema.dump(current_user)
         if not user_data['is_admin']:

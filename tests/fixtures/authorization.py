@@ -14,7 +14,7 @@ def user_auth_header(init_db, new_user):
 
     user_schema = UserSchema()
     user_data = user_schema.dump(new_user)
-    token = generate_token(user_data['id'])
+    token = generate_token(user_data)
     return {
         'Authorization': token,
         'Content-Type': 'application/json'
@@ -27,7 +27,7 @@ def admin_auth_header(init_db, new_admin):
 
     user_schema = UserSchema()
     user_data = user_schema.dump(new_admin)
-    token = generate_token(user_data['id'])
+    token = generate_token(user_data)
     return {
         'Authorization': token,
         'Content-Type': 'application/json'
